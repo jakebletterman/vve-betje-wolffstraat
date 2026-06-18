@@ -12,13 +12,15 @@ const FORM_HB = "https://docs.google.com/forms/PLACEHOLDER_HB"; // Huurder + bew
 
 /* ----- Aankondigingen -----
    Voeg nieuwe aankondigingen toe aan het BEGIN van deze array.
-   De eerste in de array verschijnt bovenaan de pagina.
+   De eerste in de array verschijnt bovenaan de pagina (nieuwste eerst).
 
    Structuur van een aankondiging:
    {
-     title: "Titel van de aankondiging",
-     date: "maand jaar",         // wordt weergegeven onder de titel
-     body: `Volledige tekst...`, // gebruik backticks voor meerdere regels
+     title:     "Titel van de aankondiging",
+     date:      "maand jaar",
+     category:  "Evenement",   // badge: "Evenement" | "Enquête" | "Onderhoud" | "Algemeen"
+     excerpt:   "",            // optionele korte samenvatting (leeg = auto)
+     body:      `Volledige tekst...`,
      signatory: "Groningen, [datum]\n[Naam]\n[Functie]"
    }
    ---------------------------------------------------------- */
@@ -26,6 +28,8 @@ const ANNOUNCEMENTS = [
   {
     title: "Nationale Burendag",
     date: "juni 2026",
+    category: "Evenement",
+    excerpt: "Op 26 september is het weer Nationale Burendag. Wij zoeken enthousiaste bewoners die willen helpen organiseren op ons binnenterrein.",
     body: `Verder hebben we de volgende vraag: jaarlijks promoot Douwe Egberts de "Nationale Burendag". Een gelegenheid om onder genot van een kop koffie of thee en fris elkaar in ons geval op het binnenterrein te ontmoeten en voor velen kennis te maken met elkaar.
 
 Dit jaar staat deze dag gepland op 26 september.
@@ -38,8 +42,10 @@ Mocht je bereid zijn dit op te pakken, meld je dan bij mij (no.12).`,
     signatory: "Groningen, juni 2026\nHenny Kik\nvoorzitter"
   },
   {
-    title: "Enquete aankondiging",
+    title: "Enquête aankondiging",
     date: "juni 2026",
+    category: "Enquête",
+    excerpt: "Het bestuur heeft besloten een uitgebreide bewonersquête te houden over verduurzaming en woonbeleving. Deelname wordt door iedereen op prijs gesteld.",
     body: `Beste bewoners van de flat Betje Wolffstraat.
 
 Tijdens de afgelopen jaarvergadering is besloten om, mede ten behoeve van de aankomende verduurzaming van het gebouw, een uitgebreide enquete te houden. Er zal een breed scala aan onderwerpen de revue passeren. Zaken die het eigendom en/of direct gebruik van de appartementen betreffen, maar ook in meer algemene zin hoe het bevalt om in onze flat te wonen en wat er in het algemeen veranderd of verbeterd zou kunnen worden.
@@ -56,34 +62,103 @@ Voor zover mogelijk is deelname aan de enquete "verplicht". Wij kunnen natuurlij
 /* =====================================================
    Aankondigingen renderen (alleen op index.html)
    ===================================================== */
+
+/* Kleurpalet voor artikel-afbeeldingsgebieden (varieert per kaart) */
+var CARD_GRADIENTS = [
+  "linear-gradient(135deg, #1E3851 0%, #2B4C6F 50%, #3a6491 100%)",
+  "linear-gradient(135deg, #316049 0%, #3F7A5E 50%, #4e9874 100%)",
+  "linear-gradient(135deg, #7a3e28 0%, #9C5B3E 50%, #b87355 100%)",
+  "linear-gradient(135deg, #2B4C6F 0%, #3F7A5E 100%)",
+  "linear-gradient(135deg, #3F7A5E 0%, #2B4C6F 100%)",
+  "linear-gradient(135deg, #1E3851 0%, #9C5B3E 100%)"
+];
+
+function getExcerpt(item) {
+  if (item.excerpt && item.excerpt.trim()) return item.excerpt.trim();
+  var text = item.body.replace(/\n+/g, " ").trim();
+  if (text.length <= 160) return text;
+  return text.slice(0, 157).replace(/\s+\S*$/, "") + "…";
+}
+
 function renderAnnouncements() {
   var container = document.getElementById("announcements-container");
   if (!container) return;
 
   ANNOUNCEMENTS.forEach(function (item, index) {
     var article = document.createElement("article");
-    article.className = "card anim-item";
-    article.style.animationDelay = (0.1 + index * 0.08) + "s";
-    article.setAttribute("aria-label", item.title);
+    article.className = "article-card anim-item" + (index === 0 ? " article-card--featured" : "");
+    article.style.transitionDelay = (0.08 + index * 0.1) + "s";
+
+    var gradient = CARD_GRADIENTS[index % CARD_GRADIENTS.length];
+    var isNewest = index === 0;
+    var excerpt  = escapeHtml(getExcerpt(item));
 
     article.innerHTML =
-      '<h3 class="card-title">' + escapeHtml(item.title) + '</h3>' +
-      '<hr class="card-title-rule" aria-hidden="true">' +
-      '<p class="card-date">' + escapeHtml(item.date) + '</p>' +
-      '<div class="card-body">' + escapeHtml(item.body) + '</div>' +
-      '<hr class="card-divider" aria-hidden="true">' +
-      '<p class="card-signatory">' + escapeHtml(item.signatory) + '</p>';
+      '<div class="article-card-image" style="background:' + gradient + '" aria-hidden="true">' +
+        '<div class="article-card-image-pattern"></div>' +
+      '</div>' +
+      '<div class="article-card-body">' +
+        '<div class="article-card-meta">' +
+          (isNewest ? '<span class="article-badge article-badge--new">Nieuwste</span>' : '') +
+          (item.category ? '<span class="article-badge article-badge--cat">' + escapeHtml(item.category) + '</span>' : '') +
+          '<span class="article-card-date">' + escapeHtml(item.date) + '</span>' +
+        '</div>' +
+        '<h3 class="article-card-title">' + escapeHtml(item.title) + '</h3>' +
+        '<p class="article-card-excerpt">' + excerpt + '</p>' +
+        '<button class="btn-read-more" data-index="' + index + '" aria-label="Lees volledig artikel: ' + escapeHtml(item.title) + '">' +
+          'Lees meer' +
+          '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9 4 13 8 9 12"/></svg>' +
+        '</button>' +
+      '</div>';
 
     container.appendChild(article);
   });
+
+  container.addEventListener("click", function (e) {
+    var btn = e.target.closest(".btn-read-more");
+    if (btn) openArticleModal(parseInt(btn.dataset.index, 10));
+  });
 }
 
-function escapeHtml(str) {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+/* =====================================================
+   Artikel modal
+   ===================================================== */
+function openArticleModal(index) {
+  var item  = ANNOUNCEMENTS[index];
+  var modal = document.getElementById("article-modal");
+  if (!modal || !item) return;
+
+  document.getElementById("modal-category").textContent  = item.category || "";
+  document.getElementById("modal-title").textContent     = item.title;
+  document.getElementById("modal-date").textContent      = item.date;
+  document.getElementById("modal-body").textContent      = item.body;
+  document.getElementById("modal-signatory").textContent = item.signatory;
+
+  modal.classList.add("is-open");
+  document.body.style.overflow = "hidden";
+  modal.querySelector(".article-modal-close").focus();
+}
+
+function closeArticleModal() {
+  var modal = document.getElementById("article-modal");
+  if (!modal) return;
+  modal.classList.remove("is-open");
+  document.body.style.overflow = "";
+}
+
+function initModal() {
+  var modal = document.getElementById("article-modal");
+  if (!modal) return;
+
+  modal.querySelector(".article-modal-close").addEventListener("click", closeArticleModal);
+
+  modal.addEventListener("click", function (e) {
+    if (e.target === modal) closeArticleModal();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeArticleModal();
+  });
 }
 
 /* =====================================================
@@ -100,7 +175,38 @@ function initScrollEffects() {
   }
 
   window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll(); // direct check bij laden
+  onScroll();
+}
+
+/* =====================================================
+   Intersection Observer voor anim-items buiten viewport
+   ===================================================== */
+function initScrollAnimations() {
+  var items = document.querySelectorAll(".anim-item");
+
+  if (!("IntersectionObserver" in window)) {
+    items.forEach(function (el) { el.classList.add("anim-visible"); });
+    return;
+  }
+
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        var el = entry.target;
+        var delay = parseFloat(el.style.transitionDelay || 0);
+        el.classList.add("anim-visible");
+        setTimeout(function () { el.style.transitionDelay = ""; }, (delay + 0.65) * 1000);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  items.forEach(function (el) {
+    if (el.dataset.animDelay) {
+      el.style.transitionDelay = el.dataset.animDelay + "s";
+    }
+    observer.observe(el);
+  });
 }
 
 /* =====================================================
@@ -108,12 +214,10 @@ function initScrollEffects() {
    ===================================================== */
 var wizardState = {
   huisnummer: null,
-  type: null,   // "eigenaar" | "huurder"
-  gebruik: null // "bewoner" | "verhuurder"
+  type: null,
+  gebruik: null
 };
 
-/* Wizard stap-indicator bijwerken.
-   n = 1: stap 1 actief | n = 2: stap 2 actief | n = 3: stap 3 actief | n = 4: alle klaar */
 function setProgressStep(n) {
   var steps      = document.querySelectorAll(".wp-step");
   var connectors = document.querySelectorAll(".wp-connector");
@@ -134,7 +238,6 @@ function setProgressStep(n) {
   });
 }
 
-/* Smooth overstap tussen wizard-stappen */
 function goToStep(fromEl, toEl, progressStep) {
   fromEl.style.opacity = "0";
   setTimeout(function () {
@@ -157,7 +260,6 @@ function initWizard() {
 
   setProgressStep(1);
 
-  // Stap 1 → Stap 2
   document.getElementById("btn-next-1").addEventListener("click", function () {
     var val = numInput.value.trim();
     if (!val || isNaN(parseInt(val, 10))) {
@@ -172,13 +274,11 @@ function initWizard() {
     goToStep(step1, step2, 2);
   });
 
-  // Stap 2: eigenaar
   document.getElementById("btn-eigenaar").addEventListener("click", function () {
     wizardState.type = "eigenaar";
     goToStep(step2, step3, 3);
   });
 
-  // Stap 2: huurder → direct resultaat
   document.getElementById("btn-huurder").addEventListener("click", function () {
     wizardState.type = "huurder";
     wizardState.gebruik = null;
@@ -191,7 +291,6 @@ function initWizard() {
     }, 180);
   });
 
-  // Stap 3: zelf bewonen
   document.getElementById("btn-bewoner").addEventListener("click", function () {
     wizardState.gebruik = "bewoner";
     step3.style.opacity = "0";
@@ -203,7 +302,6 @@ function initWizard() {
     }, 180);
   });
 
-  // Stap 3: verhuren
   document.getElementById("btn-verhuurder").addEventListener("click", function () {
     wizardState.gebruik = "verhuurder";
     step3.style.opacity = "0";
@@ -215,7 +313,6 @@ function initWizard() {
     }, 180);
   });
 
-  // Opnieuw beginnen
   document.getElementById("btn-reset").addEventListener("click", function () {
     wizardState = { huisnummer: null, type: null, gebruik: null };
     numInput.value = "";
@@ -240,9 +337,8 @@ function initWizard() {
       "huurder-bewoner":     "Huurder / Bewoner — Enquête H/B"
     };
 
-    document.getElementById("result-title").textContent = labels[type] || "Enquête";
-    document.getElementById("result-detail").textContent =
-      "Huisnummer " + wizardState.huisnummer;
+    document.getElementById("result-title").textContent  = labels[type] || "Enquête";
+    document.getElementById("result-detail").textContent = "Huisnummer " + wizardState.huisnummer;
 
     var url = formUrl + "?huisnummer=" + encodeURIComponent(wizardState.huisnummer);
     document.getElementById("btn-start-form").href = url;
@@ -276,11 +372,25 @@ function initNav() {
 }
 
 /* =====================================================
+   HTML escapen
+   ===================================================== */
+function escapeHtml(str) {
+  if (!str) return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/* =====================================================
    Initialisatie
    ===================================================== */
 document.addEventListener("DOMContentLoaded", function () {
   initNav();
   initScrollEffects();
   renderAnnouncements();
+  initScrollAnimations();
+  initModal();
   initWizard();
 });

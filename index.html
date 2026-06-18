@@ -36,8 +36,23 @@
   <!-- Hero -->
   <header class="hero" role="banner">
     <div class="hero-content">
-      <h1>VvE Betje Wolffstraat 12&nbsp;t/m&nbsp;70</h1>
-      <p>Publicatiebord en informatie voor bewoners</p>
+      <p class="hero-eyebrow">Groningen</p>
+      <h1>VvE Betje Wolffstraat<br>12&nbsp;t/m&nbsp;70</h1>
+      <p class="hero-sub">Publicatiebord en informatie voor bewoners</p>
+      <div class="hero-chips" aria-hidden="true">
+        <span class="hero-chip">
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h3a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h3a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
+          30 appartementen
+        </span>
+        <span class="hero-chip">
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
+          VvE opgericht 2018
+        </span>
+        <span class="hero-chip">
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+          Betje Wolffstraat, Groningen
+        </span>
+      </div>
     </div>
     <div class="hero-scroll-hint" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -46,20 +61,141 @@
     </div>
   </header>
 
-  <!-- Aankondigingen -->
   <main>
-    <section class="announcements-section" aria-labelledby="announcements-heading">
-      <div class="container">
-        <h2 id="announcements-heading">Aankondigingen</h2>
-        <!-- Aankondigingen worden hier door script.js gerenderd vanuit de ANNOUNCEMENTS array -->
-        <div id="announcements-container" role="feed" aria-label="Aankondigingen van het bestuur"></div>
+
+    <!-- ── Publicatiebord ── -->
+    <section class="articles-section" aria-labelledby="articles-heading">
+      <div class="container-wide">
+        <header class="section-header">
+          <div class="section-label">Publicatiebord</div>
+          <h2 id="articles-heading">Berichten van het bestuur</h2>
+          <p class="section-sub">Alle aankondigingen en nieuws voor bewoners van Betje Wolffstraat&nbsp;12&nbsp;t/m&nbsp;70.</p>
+        </header>
+        <div id="announcements-container" class="articles-grid" role="feed" aria-label="Aankondigingen van het bestuur"></div>
       </div>
     </section>
+
+    <!-- ── Enquête CTA ── -->
+    <section class="cta-section cta-section--enquete" aria-labelledby="cta-enquete-heading">
+      <div class="container">
+        <div class="cta-inner">
+          <div class="cta-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+              <rect x="9" y="3" width="6" height="4" rx="2"/>
+              <line x1="9" y1="12" x2="15" y2="12"/>
+              <line x1="9" y1="16" x2="13" y2="16"/>
+            </svg>
+          </div>
+          <div class="cta-text">
+            <p class="cta-label">Doe mee</p>
+            <h2 id="cta-enquete-heading">Bewonersquête 2026</h2>
+            <p>Het bestuur heeft een uitgebreide enquête opgesteld over verduurzaming en woonbeleving. Uw mening telt — vul de enquête in via onze wizard.</p>
+          </div>
+          <a href="enquete.html" class="btn-cta">
+            Naar de enquête
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9 4 13 8 9 12"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Contact & Bestuur ── -->
+    <section class="home-contact-section" aria-labelledby="contact-section-heading">
+      <div class="container-wide">
+        <header class="section-header">
+          <div class="section-label">Informatie</div>
+          <h2 id="contact-section-heading">Contact &amp; Bestuur</h2>
+          <p class="section-sub">Het bestuur is bereikbaar voor vragen, meldingen en klachten.</p>
+        </header>
+        <div class="contact-tiles">
+
+          <div class="contact-tile anim-item" data-anim-delay="0">
+            <div class="contact-tile-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <h3>Het bestuur</h3>
+            <p>Voorzitter Henny Kik is het eerste aanspreekpunt voor bewoners bij vragen over de VvE, gebouwbeheer of vergaderingen.</p>
+            <a href="contact.html" class="tile-link">
+              Contactgegevens bekijken
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9 4 13 8 9 12"/></svg>
+            </a>
+          </div>
+
+          <div class="contact-tile anim-item" data-anim-delay="0.1">
+            <div class="contact-tile-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+            </div>
+            <h3>Klachten indienen</h3>
+            <p>Voor formele klachten over het beheer of onderhoud kunt u terecht bij Pandgarant, de externe klachtenafhandelaar van de VvE.</p>
+            <a href="contact.html#klachten" class="tile-link">
+              Klachtenprocedure
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9 4 13 8 9 12"/></svg>
+            </a>
+          </div>
+
+          <div class="contact-tile anim-item" data-anim-delay="0.2">
+            <div class="contact-tile-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+            </div>
+            <h3>Jaarvergadering</h3>
+            <p>De VvE houdt jaarlijks een ledenvergadering. Aankondigingen en agenda-informatie worden tijdig op dit publicatiebord geplaatst.</p>
+            <a href="index.html#announcements-container" class="tile-link">
+              Bekijk aankondigingen
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9 4 13 8 9 12"/></svg>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
   </main>
+
+  <!-- Artikel modal -->
+  <div id="article-modal" class="article-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="article-modal-inner">
+      <button class="article-modal-close" aria-label="Artikel sluiten">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+      <div class="article-modal-content">
+        <div class="modal-meta">
+          <span class="article-badge article-badge--cat" id="modal-category"></span>
+          <span class="modal-date" id="modal-date"></span>
+        </div>
+        <h2 id="modal-title"></h2>
+        <div class="modal-body-text" id="modal-body"></div>
+        <div class="modal-signatory" id="modal-signatory"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- Footer -->
   <footer class="site-footer">
-    <p>VvE Betje Wolffstraat 12 t/m 70 &mdash; Groningen &mdash; <span id="footer-year"></span></p>
+    <div class="footer-inner">
+      <p class="footer-name">VvE Betje Wolffstraat 12&nbsp;t/m&nbsp;70</p>
+      <p class="footer-sub">Groningen &mdash; <span id="footer-year"></span></p>
+      <nav class="footer-nav" aria-label="Footer navigatie">
+        <a href="index.html">Publicatiebord</a>
+        <a href="enquete.html">Enquête</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
   </footer>
 
   <script src="script.js"></script>
