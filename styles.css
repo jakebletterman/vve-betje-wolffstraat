@@ -2,8 +2,6 @@
    VvE Betje Wolffstraat 12 t/m 70 — Gedeelde Styling
    ===================================================== */
 
-/* Google Fonts worden geladen via <head> in elke HTML pagina */
-
 /* ----- CSS Custom Properties (BRANDING.md) ----- */
 :root {
   --color-primary:       #2B4C6F;
@@ -43,6 +41,19 @@ body {
   color: var(--color-text);
   background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Subtiele grain-overlay over de hele pagina */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
 }
 
 h1, h2, h3, h4 {
@@ -90,6 +101,16 @@ img {
   border-bottom: 1px solid var(--color-border);
   box-shadow: 0 1px 4px rgba(28, 31, 35, 0.06);
   height: var(--nav-height);
+  transition: box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+/* Nav zweeft wanneer de gebruiker scrollt */
+.site-nav.scrolled {
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 16px rgba(28, 31, 35, 0.11);
+  border-bottom-color: rgba(227, 223, 214, 0.6);
 }
 
 .nav-inner {
@@ -172,17 +193,18 @@ img {
 .hero {
   position: relative;
   width: 100%;
-  height: 52vh;
-  min-height: 280px;
+  height: 58vh;
+  min-height: 320px;
   background-image:
     linear-gradient(
       to bottom,
       rgba(28, 31, 35, 0.55),
-      rgba(28, 31, 35, 0.35)
+      rgba(28, 31, 35, 0.32)
     ),
     url("hero.jpg");
   background-size: cover;
   background-position: center 40%;
+  background-attachment: fixed;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -215,13 +237,59 @@ img {
   opacity: 0;
   transform: translateY(14px);
   animation: fadeUp 0.7s ease forwards;
-  animation-delay: 0.22s;
+  animation-delay: 0.25s;
+}
+
+/* Scroll-hint pijl onderaan de hero */
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.55);
+  opacity: 1;
+  transition: opacity 0.4s ease;
+  animation: bounceDown 2.2s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.hero-scroll-hint svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+/* Verberg scroll-hint zodra er gescrold is */
+.hero.scrolled .hero-scroll-hint {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* ----- Subpagina header (enquete, contact) ----- */
 .page-header {
   background-color: var(--color-primary);
   padding: 3rem 0 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtiel diagonaal patroon als atmosferisch detail */
+.page-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.04),
+    rgba(255, 255, 255, 0.04) 1px,
+    transparent 1px,
+    transparent 12px
+  );
+}
+
+.page-header .container {
+  position: relative;
 }
 
 .page-header h1 {
@@ -231,12 +299,20 @@ img {
   color: #ffffff;
   line-height: 1.1;
   margin-bottom: 0.5rem;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: fadeUp 0.6s ease forwards;
+  animation-delay: 0.05s;
 }
 
 .page-header p {
   font-size: 1.05rem;
   color: rgba(255, 255, 255, 0.82);
   margin-bottom: 0;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeUp 0.6s ease forwards;
+  animation-delay: 0.17s;
 }
 
 /* ----- Aankondigingen sectie ----- */
@@ -244,25 +320,42 @@ img {
   padding: 3rem 0 4rem;
 }
 
-.announcements-section h2 {
-  font-size: 1.1rem;
+/* Redactioneel sectielabel met decoratieve lijn rechts */
+.announcements-section > .container > h2 {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   color: var(--color-text-muted);
   margin-bottom: 2rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--color-border);
+}
+
+.announcements-section > .container > h2::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border);
 }
 
 /* ----- Aankondiging kaart ----- */
 .card {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-brick);
   border-radius: 8px;
   padding: 28px 32px;
   margin-bottom: 1.75rem;
   box-shadow: 0 1px 3px rgba(28, 31, 35, 0.06), 0 4px 12px rgba(28, 31, 35, 0.04);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(28, 31, 35, 0.08), 0 12px 28px rgba(28, 31, 35, 0.09);
 }
 
 .card-title {
@@ -324,7 +417,7 @@ img {
   border-radius: 6px;
   cursor: pointer;
   text-decoration: none;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease;
   border: 2px solid transparent;
 }
 
@@ -339,6 +432,8 @@ img {
   border-color: var(--color-accent-hover);
   text-decoration: none;
   color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(63, 122, 94, 0.3);
 }
 
 .btn-secondary {
@@ -351,6 +446,7 @@ img {
   background-color: var(--color-accent);
   color: #ffffff;
   text-decoration: none;
+  transform: translateY(-1px);
 }
 
 .btn-choice {
@@ -364,6 +460,7 @@ img {
   border-color: var(--color-primary);
   background-color: var(--color-bg);
   text-decoration: none;
+  transform: translateY(-1px);
 }
 
 .btn-choice.selected {
@@ -383,6 +480,87 @@ img {
   border-radius: 8px;
   padding: 2.5rem 2rem;
   box-shadow: 0 1px 3px rgba(28, 31, 35, 0.06), 0 4px 12px rgba(28, 31, 35, 0.04);
+}
+
+/* Wizard stap-indicator */
+.wizard-progress {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.wp-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 80px;
+}
+
+.wp-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--color-border);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.wp-step.is-active .wp-dot {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(43, 76, 111, 0.15);
+}
+
+.wp-step.is-done .wp-dot {
+  background-color: var(--color-accent);
+  color: #ffffff;
+}
+
+.wp-label {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-top: 0.45rem;
+  text-align: center;
+  line-height: 1.25;
+  transition: color 0.3s ease;
+}
+
+.wp-step.is-active .wp-label {
+  color: var(--color-primary);
+}
+
+.wp-step.is-done .wp-label {
+  color: var(--color-accent);
+}
+
+/* Verbindingslijn tussen stap-bolletjes */
+.wp-connector {
+  flex: 1;
+  height: 2px;
+  background-color: var(--color-border);
+  margin-top: 15px;
+  transition: background-color 0.35s ease;
+}
+
+.wp-connector.is-done {
+  background-color: var(--color-accent);
+}
+
+.wizard-step {
+  transition: opacity 0.18s ease;
 }
 
 .wizard-step h2 {
@@ -419,7 +597,7 @@ img {
   border-radius: 6px;
   display: block;
   margin-bottom: 1.25rem;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .wizard-step input[type="number"]:focus {
@@ -455,6 +633,7 @@ img {
 .result-block {
   background-color: var(--color-bg);
   border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
   border-radius: 6px;
   padding: 1.25rem 1.5rem;
   margin-bottom: 1.5rem;
@@ -524,12 +703,11 @@ img {
 
 /* ----- Footer ----- */
 .site-footer {
-  border-top: 1px solid var(--color-border);
+  background-color: var(--color-primary);
   padding: 2rem 1.5rem;
   text-align: center;
   font-size: 0.9rem;
-  color: var(--color-text-muted);
-  background-color: var(--color-bg);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* ----- Animaties ----- */
@@ -538,6 +716,11 @@ img {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes bounceDown {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(7px); }
 }
 
 .anim-item {
@@ -549,6 +732,19 @@ img {
 /* ----- Utility ----- */
 .hidden {
   display: none !important;
+}
+
+/* ----- Reduced motion ----- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hero-scroll-hint {
+    display: none;
+  }
 }
 
 /* ----- Media Queries ----- */
@@ -615,6 +811,19 @@ img {
 
   .card {
     padding: 20px 18px;
+  }
+
+  /* background-attachment: fixed werkt slecht op iOS */
+  .hero {
+    background-attachment: scroll;
+  }
+
+  .wp-step {
+    width: 64px;
+  }
+
+  .wp-label {
+    font-size: 0.65rem;
   }
 
   .choice-buttons {

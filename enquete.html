@@ -47,6 +47,24 @@
       <div class="container">
         <div class="wizard-card anim-item" style="animation-delay: 0.1s;">
 
+          <!-- Stap-indicator -->
+          <nav class="wizard-progress" aria-label="Stap voortgang">
+            <div class="wp-step is-active" data-step="1" aria-current="step">
+              <div class="wp-dot">1</div>
+              <div class="wp-label">Huisnummer</div>
+            </div>
+            <div class="wp-connector"></div>
+            <div class="wp-step" data-step="2">
+              <div class="wp-dot">2</div>
+              <div class="wp-label">Woonsituatie</div>
+            </div>
+            <div class="wp-connector"></div>
+            <div class="wp-step" data-step="3">
+              <div class="wp-dot">3</div>
+              <div class="wp-label">Gebruik</div>
+            </div>
+          </nav>
+
           <!-- Stap 1: Huisnummer -->
           <div id="step-1" class="wizard-step" aria-live="polite">
             <h2>Stap 1 van 3</h2>

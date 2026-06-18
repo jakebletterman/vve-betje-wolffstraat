@@ -57,11 +57,11 @@ Voor zover mogelijk is deelname aan de enquete "verplicht". Wij kunnen natuurlij
    Aankondigingen renderen (alleen op index.html)
    ===================================================== */
 function renderAnnouncements() {
-  const container = document.getElementById("announcements-container");
+  var container = document.getElementById("announcements-container");
   if (!container) return;
 
   ANNOUNCEMENTS.forEach(function (item, index) {
-    const article = document.createElement("article");
+    var article = document.createElement("article");
     article.className = "card anim-item";
     article.style.animationDelay = (0.1 + index * 0.08) + "s";
     article.setAttribute("aria-label", item.title);
@@ -87,6 +87,23 @@ function escapeHtml(str) {
 }
 
 /* =====================================================
+   Scroll-effecten (nav zweeft, hero scroll-hint verdwijnt)
+   ===================================================== */
+function initScrollEffects() {
+  var nav  = document.querySelector(".site-nav");
+  var hero = document.querySelector(".hero");
+
+  function onScroll() {
+    var isScrolled = window.scrollY > 10;
+    if (nav)  nav.classList.toggle("scrolled", isScrolled);
+    if (hero) hero.classList.toggle("scrolled", isScrolled);
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll(); // direct check bij laden
+}
+
+/* =====================================================
    Enquête wizard (alleen op enquete.html)
    ===================================================== */
 var wizardState = {
@@ -95,15 +112,50 @@ var wizardState = {
   gebruik: null // "bewoner" | "verhuurder"
 };
 
+/* Wizard stap-indicator bijwerken.
+   n = 1: stap 1 actief | n = 2: stap 2 actief | n = 3: stap 3 actief | n = 4: alle klaar */
+function setProgressStep(n) {
+  var steps      = document.querySelectorAll(".wp-step");
+  var connectors = document.querySelectorAll(".wp-connector");
+
+  steps.forEach(function (step, i) {
+    step.classList.remove("is-active", "is-done");
+    step.removeAttribute("aria-current");
+    if (i + 1 < n) {
+      step.classList.add("is-done");
+    } else if (i + 1 === n) {
+      step.classList.add("is-active");
+      step.setAttribute("aria-current", "step");
+    }
+  });
+
+  connectors.forEach(function (conn, i) {
+    conn.classList.toggle("is-done", i + 1 < n);
+  });
+}
+
+/* Smooth overstap tussen wizard-stappen */
+function goToStep(fromEl, toEl, progressStep) {
+  fromEl.style.opacity = "0";
+  setTimeout(function () {
+    hide(fromEl);
+    fromEl.style.opacity = "";
+    show(toEl);
+    setProgressStep(progressStep);
+  }, 180);
+}
+
 function initWizard() {
   var step1 = document.getElementById("step-1");
-  if (!step1) return; // Niet op enquete pagina
+  if (!step1) return;
 
   var step2    = document.getElementById("step-2");
   var step3    = document.getElementById("step-3");
   var result   = document.getElementById("result");
   var numInput = document.getElementById("huisnummer-input");
   var numError = document.getElementById("huisnummer-error");
+
+  setProgressStep(1);
 
   // Stap 1 → Stap 2
   document.getElementById("btn-next-1").addEventListener("click", function () {
@@ -117,64 +169,83 @@ function initWizard() {
     numError.classList.remove("visible");
     numInput.classList.remove("input-error");
     wizardState.huisnummer = parseInt(val, 10);
-    show(step2);
-    hide(step1);
+    goToStep(step1, step2, 2);
   });
 
-  // Stap 2: eigenaar of huurder
+  // Stap 2: eigenaar
   document.getElementById("btn-eigenaar").addEventListener("click", function () {
     wizardState.type = "eigenaar";
-    show(step3);
-    hide(step2);
+    goToStep(step2, step3, 3);
   });
 
+  // Stap 2: huurder → direct resultaat
   document.getElementById("btn-huurder").addEventListener("click", function () {
     wizardState.type = "huurder";
     wizardState.gebruik = null;
-    showResult("huurder-bewoner", FORM_HB);
-    hide(step2);
+    step2.style.opacity = "0";
+    setTimeout(function () {
+      hide(step2);
+      step2.style.opacity = "";
+      showResult("huurder-bewoner", FORM_HB);
+      setProgressStep(4);
+    }, 180);
   });
 
-  // Stap 3: zelf bewonen of verhuren
+  // Stap 3: zelf bewonen
   document.getElementById("btn-bewoner").addEventListener("click", function () {
     wizardState.gebruik = "bewoner";
-    showResult("eigenaar-bewoner", FORM_EB);
-    hide(step3);
+    step3.style.opacity = "0";
+    setTimeout(function () {
+      hide(step3);
+      step3.style.opacity = "";
+      showResult("eigenaar-bewoner", FORM_EB);
+      setProgressStep(4);
+    }, 180);
   });
 
+  // Stap 3: verhuren
   document.getElementById("btn-verhuurder").addEventListener("click", function () {
     wizardState.gebruik = "verhuurder";
-    showResult("eigenaar-verhuurder", FORM_EV);
-    hide(step3);
+    step3.style.opacity = "0";
+    setTimeout(function () {
+      hide(step3);
+      step3.style.opacity = "";
+      showResult("eigenaar-verhuurder", FORM_EV);
+      setProgressStep(4);
+    }, 180);
   });
 
-  // Opnieuw knop
+  // Opnieuw beginnen
   document.getElementById("btn-reset").addEventListener("click", function () {
     wizardState = { huisnummer: null, type: null, gebruik: null };
     numInput.value = "";
     numError.classList.remove("visible");
     numInput.classList.remove("input-error");
-    hide(step2);
-    hide(step3);
-    hide(result);
-    show(step1);
-    numInput.focus();
+    result.style.opacity = "0";
+    setTimeout(function () {
+      hide(result);
+      result.style.opacity = "";
+      hide(step2);
+      hide(step3);
+      show(step1);
+      setProgressStep(1);
+      numInput.focus();
+    }, 180);
   });
 
   function showResult(type, formUrl) {
     var labels = {
-      "eigenaar-bewoner":    "Eigenaar / Zelf bewoond — Enquête deel E/B",
-      "eigenaar-verhuurder": "Eigenaar / Verhuurd — Enquête deel E/V",
-      "huurder-bewoner":     "Huurder / Bewoner — Enquête deel H/B"
+      "eigenaar-bewoner":    "Eigenaar / Zelf bewoond — Enquête E/B",
+      "eigenaar-verhuurder": "Eigenaar / Verhuurd — Enquête E/V",
+      "huurder-bewoner":     "Huurder / Bewoner — Enquête H/B"
     };
 
     document.getElementById("result-title").textContent = labels[type] || "Enquête";
     document.getElementById("result-detail").textContent =
       "Huisnummer " + wizardState.huisnummer;
 
-    var startBtn = document.getElementById("btn-start-form");
     var url = formUrl + "?huisnummer=" + encodeURIComponent(wizardState.huisnummer);
-    startBtn.href = url;
+    document.getElementById("btn-start-form").href = url;
 
     show(result);
   }
@@ -196,7 +267,6 @@ function initNav() {
     toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
   });
 
-  // Sluit menu bij klik op een link
   links.querySelectorAll("a").forEach(function (a) {
     a.addEventListener("click", function () {
       links.classList.remove("open");
@@ -210,6 +280,7 @@ function initNav() {
    ===================================================== */
 document.addEventListener("DOMContentLoaded", function () {
   initNav();
+  initScrollEffects();
   renderAnnouncements();
   initWizard();
 });
