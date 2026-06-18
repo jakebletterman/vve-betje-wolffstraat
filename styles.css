@@ -1,0 +1,637 @@
+/* =====================================================
+   VvE Betje Wolffstraat 12 t/m 70 — Gedeelde Styling
+   ===================================================== */
+
+/* Google Fonts worden geladen via <head> in elke HTML pagina */
+
+/* ----- CSS Custom Properties (BRANDING.md) ----- */
+:root {
+  --color-primary:       #2B4C6F;
+  --color-primary-hover: #1E3851;
+  --color-accent:        #3F7A5E;
+  --color-accent-hover:  #316049;
+  --color-brick:         #9C5B3E;
+  --color-bg:            #F4F2ED;
+  --color-surface:       #FFFFFF;
+  --color-text:          #1C1F23;
+  --color-text-muted:    #5C636B;
+  --color-border:        #E3DFD6;
+  --color-success:       #2F7D54;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body:    "Source Sans 3", sans-serif;
+
+  --max-width: 720px;
+  --nav-height: 60px;
+}
+
+/* ----- Reset & Base ----- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--color-text);
+}
+
+p {
+  margin-bottom: 1em;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ----- Leeskolom container ----- */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ----- Navigatiebalk ----- */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 1px 4px rgba(28, 31, 35, 0.06);
+  height: var(--nav-height);
+}
+
+.nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  white-space: nowrap;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav-logo:hover {
+  text-decoration: none;
+  color: var(--color-primary-hover);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+}
+
+.nav-links a {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 0.875rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: var(--color-primary-hover);
+  text-decoration: none;
+}
+
+.nav-links a.active {
+  color: var(--color-brick);
+  border-bottom-color: var(--color-brick);
+}
+
+/* Hamburger (mobiel) */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: var(--color-primary);
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-toggle svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ----- Hero (alleen index.html) ----- */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 52vh;
+  min-height: 280px;
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(28, 31, 35, 0.55),
+      rgba(28, 31, 35, 0.35)
+    ),
+    url("hero.jpg");
+  background-size: cover;
+  background-position: center 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-content {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  color: #ffffff;
+}
+
+.hero-content h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.05;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: fadeUp 0.7s ease forwards;
+  animation-delay: 0.1s;
+}
+
+.hero-content p {
+  font-size: clamp(1rem, 2.5vw, 1.15rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.88);
+  margin-bottom: 0;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: fadeUp 0.7s ease forwards;
+  animation-delay: 0.22s;
+}
+
+/* ----- Subpagina header (enquete, contact) ----- */
+.page-header {
+  background-color: var(--color-primary);
+  padding: 3rem 0 2.5rem;
+}
+
+.page-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.1rem);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.82);
+  margin-bottom: 0;
+}
+
+/* ----- Aankondigingen sectie ----- */
+.announcements-section {
+  padding: 3rem 0 4rem;
+}
+
+.announcements-section h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin-bottom: 2rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ----- Aankondiging kaart ----- */
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 28px 32px;
+  margin-bottom: 1.75rem;
+  box-shadow: 0 1px 3px rgba(28, 31, 35, 0.06), 0 4px 12px rgba(28, 31, 35, 0.04);
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.card-title-rule {
+  width: 40px;
+  height: 2px;
+  background-color: var(--color-brick);
+  margin-bottom: 1.25rem;
+  border: none;
+}
+
+.card-date {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1.25rem;
+  font-style: italic;
+}
+
+.card-body {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--color-text);
+  white-space: pre-line;
+}
+
+.card-divider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 1.5rem 0 1rem;
+}
+
+.card-signatory {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  white-space: pre-line;
+  line-height: 1.5;
+}
+
+/* ----- Knoppen ----- */
+.btn-primary,
+.btn-secondary,
+.btn-choice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding: 0.75rem 1.375rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.btn-primary {
+  background-color: var(--color-accent);
+  color: #ffffff;
+  border-color: var(--color-accent);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.btn-secondary {
+  background-color: var(--color-surface);
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-accent);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.btn-choice {
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+  border-color: var(--color-border);
+  font-size: 1rem;
+}
+
+.btn-choice:hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-bg);
+  text-decoration: none;
+}
+
+.btn-choice.selected {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+/* ----- Enquête wizard ----- */
+.wizard-section {
+  padding: 3rem 0 4rem;
+}
+
+.wizard-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 1px 3px rgba(28, 31, 35, 0.06), 0 4px 12px rgba(28, 31, 35, 0.04);
+}
+
+.wizard-step h2 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.wizard-step .step-hint {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.wizard-step label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.9375rem;
+}
+
+.wizard-step input[type="number"] {
+  width: 100%;
+  max-width: 200px;
+  min-height: 44px;
+  padding: 0.6rem 0.875rem;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  display: block;
+  margin-bottom: 1.25rem;
+  transition: border-color 0.2s ease;
+}
+
+.wizard-step input[type="number"]:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(43, 76, 111, 0.12);
+}
+
+.wizard-step input.input-error {
+  border-color: #c0392b;
+}
+
+.error-message {
+  color: #c0392b;
+  font-size: 0.9rem;
+  margin-top: -0.75rem;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+.error-message.visible {
+  display: block;
+}
+
+.choice-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* Resultaat blok */
+.result-block {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.result-block .result-type-label {
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.result-block .result-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 0.25rem;
+}
+
+.result-block .result-detail {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+}
+
+.result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+/* ----- Contact pagina ----- */
+.contact-section {
+  padding: 3rem 0 4rem;
+}
+
+.contact-block,
+.complaint-block {
+  margin-bottom: 2.5rem;
+}
+
+.contact-block h2,
+.complaint-block h2 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-brick);
+  display: inline-block;
+}
+
+.complaint-block {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.75rem 2rem;
+  box-shadow: 0 1px 3px rgba(28, 31, 35, 0.06);
+}
+
+.complaint-block p {
+  margin-bottom: 1.25rem;
+}
+
+/* ----- Footer ----- */
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  background-color: var(--color-bg);
+}
+
+/* ----- Animaties ----- */
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.anim-item {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.55s ease forwards;
+}
+
+/* ----- Utility ----- */
+.hidden {
+  display: none !important;
+}
+
+/* ----- Media Queries ----- */
+
+/* Tablet en groter */
+@media (min-width: 640px) {
+  .wizard-card {
+    padding: 3rem 2.5rem;
+  }
+
+  .hero-content h1 {
+    font-size: clamp(2.25rem, 4.5vw, 3rem);
+  }
+
+  .nav-toggle {
+    display: none;
+  }
+}
+
+/* Mobiel */
+@media (max-width: 639px) {
+  .nav-logo {
+    font-size: 0.85rem;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5rem 0;
+    box-shadow: 0 4px 12px rgba(28, 31, 35, 0.08);
+    gap: 0;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    width: 100%;
+    padding: 0 1.5rem;
+    border-bottom: none;
+    border-left: 3px solid transparent;
+  }
+
+  .nav-links a.active {
+    border-left-color: var(--color-brick);
+    border-bottom-color: transparent;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  .card {
+    padding: 20px 18px;
+  }
+
+  .choice-buttons {
+    flex-direction: column;
+  }
+
+  .choice-buttons .btn-choice {
+    width: 100%;
+  }
+
+  .result-actions {
+    flex-direction: column;
+  }
+
+  .result-actions .btn-primary,
+  .result-actions .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}

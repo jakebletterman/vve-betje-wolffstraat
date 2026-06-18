@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Vul de korte vragen in om naar de juiste enquête te gaan. VvE Betje Wolffstraat 12 t/m 70.">
+  <title>Enquête — VvE Betje Wolffstraat 12 t/m 70</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigatiebalk -->
+  <nav class="site-nav" aria-label="Hoofdnavigatie">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="VvE Betje Wolffstraat — naar homepage">
+        VvE Betje Wolffstraat
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menu openen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="6"  x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="index.html"                              >Publicatiebord</a></li>
+        <li><a href="enquete.html" class="active" aria-current="page">Enquête</a></li>
+        <li><a href="contact.html"                            >Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Subpagina header -->
+  <header class="page-header" role="banner">
+    <div class="container">
+      <h1>Enquête</h1>
+      <p>Beantwoord de onderstaande vragen om naar de juiste enquête te worden doorgestuurd.</p>
+    </div>
+  </header>
+
+  <!-- Wizard -->
+  <main>
+    <section class="wizard-section" aria-label="Enquête wizard">
+      <div class="container">
+        <div class="wizard-card anim-item" style="animation-delay: 0.1s;">
+
+          <!-- Stap 1: Huisnummer -->
+          <div id="step-1" class="wizard-step" aria-live="polite">
+            <h2>Stap 1 van 3</h2>
+            <p class="step-hint">Voer uw huisnummer in (tussen 12 en 70).</p>
+
+            <label for="huisnummer-input">Huisnummer</label>
+            <input
+              type="number"
+              id="huisnummer-input"
+              name="huisnummer"
+              min="12"
+              max="70"
+              placeholder="bijv. 36"
+              autocomplete="off"
+              aria-required="true"
+              aria-describedby="huisnummer-error"
+            >
+            <p class="error-message" id="huisnummer-error" role="alert">
+              Vul een geldig huisnummer in voordat u verdergaat.
+            </p>
+
+            <div class="choice-buttons">
+              <button type="button" id="btn-next-1" class="btn-primary">
+                Verder →
+              </button>
+            </div>
+          </div>
+
+          <!-- Stap 2: Eigenaar of huurder -->
+          <div id="step-2" class="wizard-step hidden" aria-live="polite">
+            <h2>Stap 2 van 3</h2>
+            <p class="step-hint">Bent u eigenaar of huurder van uw woning?</p>
+
+            <div class="choice-buttons" role="group" aria-label="Kies eigenaar of huurder">
+              <button type="button" id="btn-eigenaar" class="btn-choice">
+                Eigenaar
+              </button>
+              <button type="button" id="btn-huurder" class="btn-choice">
+                Huurder
+              </button>
+            </div>
+          </div>
+
+          <!-- Stap 3: Zelf bewonen of verhuren (alleen eigenaren) -->
+          <div id="step-3" class="wizard-step hidden" aria-live="polite">
+            <h2>Stap 3 van 3</h2>
+            <p class="step-hint">Bewoont u de woning zelf, of verhuurt u deze?</p>
+
+            <div class="choice-buttons" role="group" aria-label="Kies bewoner of verhuurder">
+              <button type="button" id="btn-bewoner" class="btn-choice">
+                Zelf bewonen
+              </button>
+              <button type="button" id="btn-verhuurder" class="btn-choice">
+                Verhuren
+              </button>
+            </div>
+          </div>
+
+          <!-- Resultaat -->
+          <div id="result" class="hidden" aria-live="polite">
+            <h2>Uw enquête</h2>
+            <p>Op basis van uw antwoorden is dit de juiste enquête voor u:</p>
+
+            <div class="result-block">
+              <p class="result-type-label">Enquête type</p>
+              <p class="result-title" id="result-title"></p>
+              <p class="result-detail" id="result-detail"></p>
+            </div>
+
+            <div class="result-actions">
+              <a
+                id="btn-start-form"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-primary"
+                aria-label="Start de enquête (opent in nieuw tabblad)"
+              >
+                Start enquête
+                <span aria-hidden="true">↗</span>
+              </a>
+              <button type="button" id="btn-reset" class="btn-secondary">
+                Opnieuw beginnen
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>VvE Betje Wolffstraat 12 t/m 70 &mdash; Groningen &mdash; <span id="footer-year"></span></p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById("footer-year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

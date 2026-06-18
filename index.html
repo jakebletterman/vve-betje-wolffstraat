@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Publicatiebord en informatie voor bewoners van VvE Betje Wolffstraat 12 t/m 70 in Groningen.">
+  <title>Publicatiebord — VvE Betje Wolffstraat 12 t/m 70</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigatiebalk -->
+  <nav class="site-nav" aria-label="Hoofdnavigatie">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="VvE Betje Wolffstraat — naar homepage">
+        VvE Betje Wolffstraat
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menu openen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="6"  x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="index.html"    class="active" aria-current="page">Publicatiebord</a></li>
+        <li><a href="enquete.html"                               >Enquête</a></li>
+        <li><a href="contact.html"                               >Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero" role="banner">
+    <div class="hero-content">
+      <h1>VvE Betje Wolffstraat 12&nbsp;t/m&nbsp;70</h1>
+      <p>Publicatiebord en informatie voor bewoners</p>
+    </div>
+  </header>
+
+  <!-- Aankondigingen -->
+  <main>
+    <section class="announcements-section" aria-labelledby="announcements-heading">
+      <div class="container">
+        <h2 id="announcements-heading">Aankondigingen</h2>
+        <!-- Aankondigingen worden hier door script.js gerenderd vanuit de ANNOUNCEMENTS array -->
+        <div id="announcements-container" role="feed" aria-label="Aankondigingen van het bestuur"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>VvE Betje Wolffstraat 12 t/m 70 &mdash; Groningen &mdash; <span id="footer-year"></span></p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById("footer-year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
