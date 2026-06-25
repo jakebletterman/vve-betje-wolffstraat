@@ -6,9 +6,9 @@
    Vervang de drie PLACEHOLDER-waarden hieronder met de echte Google Form URLs
    zodra de formulieren aangemaakt zijn.
    ---------------------------------------------------------- */
-const FORM_EB = "https://docs.google.com/forms/PLACEHOLDER_EB"; // Eigenaar + zelf bewoner
-const FORM_EV = "https://docs.google.com/forms/PLACEHOLDER_EV"; // Eigenaar + verhuurder
-const FORM_HB = "https://docs.google.com/forms/PLACEHOLDER_HB"; // Huurder + bewoner
+const FORM_EB = "https://docs.google.com/forms/d/e/1FAIpQLScwGRZXuXJtdvYdBf5IR7OZswRT7ysdK-u19Ftz7MiCk8nuiw/viewform"; // Eigenaar + zelf bewoner
+const FORM_EV = "https://docs.google.com/forms/d/e/1FAIpQLSfMmOuvWRiuREe3z3agcLubyLmHcUp6-vZ-9SBut860kzAe0w/viewform"; // Eigenaar + verhuurder
+const FORM_HB = "https://docs.google.com/forms/d/e/1FAIpQLSd8O73FjuBDIM28j0q28ai3MColeSDQpqayV-FY9aO_ehHTug/viewform"; // Huurder + bewoner
 
 /* ----- Aankondigingen -----
    Voeg nieuwe aankondigingen toe aan het BEGIN van deze array.
@@ -238,6 +238,9 @@ function setProgressStep(n) {
   });
 }
 
+function show(el) { el.classList.remove("hidden"); }
+function hide(el) { el.classList.add("hidden"); }
+
 function goToStep(fromEl, toEl, progressStep) {
   fromEl.style.opacity = "0";
   setTimeout(function () {
@@ -345,9 +348,6 @@ function initWizard() {
 
     show(result);
   }
-
-  function show(el) { el.classList.remove("hidden"); }
-  function hide(el) { el.classList.add("hidden"); }
 }
 
 /* =====================================================
